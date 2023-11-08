@@ -20,6 +20,7 @@ import { CONTRACT_ID } from '@/constants'
 import SignIn from '@/components/SignIn'
 import Form from '@/components/Form'
 import Messages from '@/components/Messages'
+import { signIn, useSession } from 'next-auth/react'
 
 type Submitted = SubmitEvent & {
   target: { elements: { [key: string]: HTMLInputElement } }
@@ -55,6 +56,7 @@ const Content: React.FC = () => {
   const [account, setAccount] = useState<Account | null>(null)
   const [messages, setMessages] = useState<Array<Message>>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const { data: session } = useSession()
 
   const getAccount = useCallback(async (): Promise<Account | null> => {
     if (!accountId) {
@@ -160,83 +162,6 @@ const Content: React.FC = () => {
     alert('Switched account to ' + nextAccountId)
   }
 
-  const addMessages = useCallback(
-    async (message: string, donation: string, multiple: boolean) => {
-      const { contract } = selector.store.getState()
-      const wallet = await selector.wallet()
-      if (!multiple) {
-        return wallet
-          .signAndSendTransaction({
-            signerId: accountId!,
-            actions: [
-              {
-                type: 'FunctionCall',
-                params: {
-                  methodName: 'addMessage',
-                  args: { text: message },
-                  gas: BOATLOAD_OF_GAS,
-                  deposit: utils.format.parseNearAmount(donation)!,
-                },
-              },
-            ],
-          })
-          .catch((err) => {
-            alert('Failed to add message')
-            console.log('Failed to add message')
-
-            throw err
-          })
-      }
-
-      const transactions: Array<Transaction> = []
-
-      for (let i = 0; i < 2; i += 1) {
-        transactions.push({
-          signerId: accountId!,
-          receiverId: contract!.contractId,
-          actions: [
-            {
-              type: 'FunctionCall',
-              params: {
-                methodName: 'addMessage',
-                args: {
-                  text: `${message} (${i + 1}/2)`,
-                },
-                gas: BOATLOAD_OF_GAS,
-                deposit: utils.format.parseNearAmount(donation)!,
-              },
-            },
-          ],
-        })
-      }
-
-      return wallet.signAndSendTransactions({ transactions }).catch((err) => {
-        alert('Failed to add messages exception ' + err)
-        console.log('Failed to add messages')
-
-        throw err
-      })
-    },
-    [selector, accountId],
-  )
-
-  const handleVerifyOwner = async () => {
-    const wallet = await selector.wallet()
-    try {
-      const owner = await wallet.verifyOwner({
-        message: 'test message for verification',
-      })
-
-      if (owner) {
-        alert(`Signature for verification: ${JSON.stringify(owner)}`)
-      }
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Something went wrong'
-      alert(message)
-    }
-  }
-
   const verifyMessage = async (
     message: SignMessageParams,
     signedMessage: SignedMessage,
@@ -257,18 +182,24 @@ const Content: React.FC = () => {
 
     const isMessageVerified = verifiedFullKeyBelongsToUser && verifiedSignature
 
-    const alertMessage = isMessageVerified
-      ? 'Successfully verified'
-      : 'Failed to verify'
+    // const alertMessage = isMessageVerified
+    //   ? 'Successfully verified'
+    //   : 'Failed to verify'
 
-    alert(
-      `${alertMessage} signed message: '${
-        message.message
-      }': \n ${JSON.stringify(signedMessage)}`,
-    )
+    // alert(
+    //   `${alertMessage} signed message: '${
+    //     message.message
+    //   }': \n ${JSON.stringify(signedMessage)}`,
+    // )
+
+    console.log('msg verified', isMessageVerified)
+
+    return isMessageVerified
   }
 
   const verifyMessageBrowserWallet = useCallback(async () => {
+    console.log('verify message browser wallet')
+
     const urlParams = new URLSearchParams(
       window.location.hash.substring(1), // skip the first char (#)
     )
@@ -290,7 +221,15 @@ const Content: React.FC = () => {
       signature,
     }
 
-    await verifyMessage(message, signedMessage)
+    const result = await verifyMessage(message, signedMessage)
+
+    console.log('result', result)
+
+    await signIn('credentials', {
+      publicKey: signedMessage.publicKey,
+      accountId: signedMessage.accountId,
+      signature: result,
+    })
 
     const url = new URL(location.href)
     url.hash = ''
@@ -300,47 +239,12 @@ const Content: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleSubmit = useCallback(
-    async (e: Submitted) => {
-      e.preventDefault()
-
-      const { fieldset, message, donation, multiple } = e.target.elements
-
-      fieldset.disabled = true
-
-      return addMessages(message.value, donation.value || '0', multiple.checked)
-        .then(() => {
-          return getMessages()
-            .then((nextMessages) => {
-              setMessages(nextMessages)
-              message.value = ''
-              donation.value = SUGGESTED_DONATION
-              fieldset.disabled = false
-              multiple.checked = false
-              message.focus()
-            })
-            .catch((err) => {
-              alert('Failed to refresh messages')
-              console.log('Failed to refresh messages')
-
-              throw err
-            })
-        })
-        .catch((err) => {
-          console.error(err)
-
-          fieldset.disabled = false
-        })
-    },
-    [addMessages, getMessages],
-  )
-
   const handleSignMessage = async () => {
     const wallet = await selector.wallet()
 
     const message = 'test message to sign'
     const nonce = Buffer.from(Array.from(Array(32).keys()))
-    const recipient = 'guest-book.testnet'
+    const recipient = 'undefined'
 
     if (wallet.type === 'browser') {
       localStorage.setItem(
@@ -360,8 +264,12 @@ const Content: React.FC = () => {
         nonce,
         recipient,
       })
+
       if (signedMessage) {
-        await verifyMessage({ message, nonce, recipient }, signedMessage)
+        const result = await verifyMessage(
+          { message, nonce, recipient },
+          signedMessage,
+        )
       }
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : 'Something went wrong'
@@ -381,22 +289,23 @@ const Content: React.FC = () => {
     )
   }
 
+  if (session?.user) return <div>Logged in as {session.user.name}</div>
   return (
     <Fragment>
-      <div className="flex bg-green-300">
+      <div className="flex flex-col bg-green-300">
         <button onClick={handleSignOut}>Log out</button>
         <button onClick={handleSwitchWallet}>Switch Wallet</button>
-        <button onClick={handleVerifyOwner}>Verify Owner</button>
+        {/* <button onClick={handleVerifyOwner}>Verify Owner</button> */}
         <button onClick={handleSignMessage}>Sign Message</button>
         {accounts.length > 1 && (
           <button onClick={handleSwitchAccount}>Switch Account</button>
         )}
       </div>
-      <Form
+      {/* <Form
         account={account}
         onSubmit={(e) => handleSubmit(e as unknown as Submitted)}
-      />
-      <Messages messages={messages} />
+      /> */}
+      {/* <Messages messages={messages} /> */}
     </Fragment>
   )
 }
