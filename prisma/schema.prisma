@@ -1,0 +1,98 @@
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/d/migrate-shadow
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  publicKey         String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  publicKey    String?  @unique
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  createdDate   DateTime? @default(now())
+  updatedDate   DateTime? @updatedAt
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  mintId        String?   @unique
+  image         String?   @default("https://cdn.discordapp.com/attachments/1159197460158238730/1159948783166165102/solpal-logo.png?ex=6532e17c&is=65206c7c&hm=95e3831ff8a8e1cb955d239d1dc84da8868cfc4009bf1448af0c65a35b16d6ff&")
+  imgConfig     Json?
+  wallets       Wallet[]
+  nfts          Nft[]
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Nft {
+  publicKey            String    @id
+  name                 String?
+  index                Int?
+  image                String?
+  animation            String?
+  externalURL          String?
+  metadataCategory     String?
+  description          String?
+  symbol               String?
+  uri                  String?
+  url                  String?
+  attributes           String?
+  updateAuthority      String?
+  status               String?
+  primarySaleHappened  Boolean?
+  sellerFeeBasisPoints Int?
+  isMutable            Boolean?
+  lastParsed           DateTime?
+  createdDate          DateTime? @default(now())
+  updatedDate          DateTime? @updatedAt
+  isSearchSynced       Boolean?
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+}
+
+model Wallet {
+  publicKey   String    @id
+  createdDate DateTime? @default(now())
+  updatedDate DateTime? @updatedAt
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+}
