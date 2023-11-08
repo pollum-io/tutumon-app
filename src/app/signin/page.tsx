@@ -383,7 +383,7 @@ const Content: React.FC = () => {
 
   return (
     <Fragment>
-      <div className="flex">
+      <div className="flex bg-green-300">
         <button onClick={handleSignOut}>Log out</button>
         <button onClick={handleSwitchWallet}>Switch Wallet</button>
         <button onClick={handleVerifyOwner}>Verify Owner</button>

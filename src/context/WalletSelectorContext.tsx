@@ -66,39 +66,41 @@ export const WalletSelectorContextProvider: React.FC<{
       debug: true,
       modules: [
         setupMyNearWallet(),
-        setupLedger(),
-        setupNearWallet(),
-        setupSender(),
-        setupMathWallet(),
-        setupNightly(),
-        setupMeteorWallet(),
-        setupNearSnap(),
-        setupNarwallets(),
-        setupWelldoneWallet(),
-        setupHereWallet(),
-        setupCoin98Wallet(),
-        setupNearFi(),
-        setupRamperWallet(),
-        setupNeth({
-          gas: '300000000000000',
-          bundle: false,
-        }),
-        setupFinerWallet(),
-        setupXDEFI(),
-        setupWalletConnect({
-          projectId: 'c4f79cc...',
-          metadata: {
-            name: 'NEAR Wallet Selector',
-            description: 'Example dApp used by NEAR Wallet Selector',
-            url: 'https://github.com/near/wallet-selector',
-            icons: ['https://avatars.githubusercontent.com/u/37784886'],
-          },
-        }),
-        setupNearMobileWallet(),
+        // setupLedger(),
+        // setupNearWallet(),
+        // setupSender(),
+        // setupMathWallet(),
+        // setupNightly(),
+        // setupMeteorWallet(),
+        // setupNearSnap(),
+        // setupNarwallets(),
+        // setupWelldoneWallet(),
+        // setupHereWallet(),
+        // setupCoin98Wallet(),
+        // setupNearFi(),
+        // setupRamperWallet(),
+        // setupNeth({
+        //   gas: '300000000000000',
+        //   bundle: false,
+        // }),
+        // setupFinerWallet(),
+        // setupXDEFI(),
+        // setupWalletConnect({
+        //   projectId: 'c4f79cc...',
+        //   metadata: {
+        //     name: 'NEAR Wallet Selector',
+        //     description: 'Example dApp used by NEAR Wallet Selector',
+        //     url: 'https://github.com/near/wallet-selector',
+        //     icons: ['https://avatars.githubusercontent.com/u/37784886'],
+        //   },
+        // }),
+        // setupNearMobileWallet(),
       ],
     })
+    const description = 'Please select a wallet to sign in.'
     const _modal = setupModal(_selector, {
       contractId: CONTRACT_ID,
+      description,
     })
     const state = _selector.store.getState()
     setAccounts(state.accounts)
