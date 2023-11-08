@@ -55,7 +55,7 @@ export function Intro() {
           />
         </Link>
       </div>
-      <h1 className="mt-14 font-display text-4xl/tight font-light text-white">
+      <h1 className="font-display mt-14 text-4xl/tight font-light text-white">
         Infinite Solana Wisdom{' '}
         <span className="text-[#07fee5]">Anywhere you go.</span>
       </h1>
@@ -96,7 +96,7 @@ export function IntroFooter() {
     <p className="flex items-baseline gap-x-2 text-[0.8125rem]/6 text-gray-500">
       Brought to you by{' '}
       <IconLink href="#" icon={TwitterIcon} compact large>
-        @SolanaPal
+        @NearPal
       </IconLink>
     </p>
   )
