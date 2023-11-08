@@ -375,18 +375,15 @@ const Content: React.FC = () => {
 
   if (!account) {
     return (
-      <Fragment>
-        <div>
-          <button onClick={handleSignIn}>Log in</button>
-        </div>
-        <SignIn />
-      </Fragment>
+      <button className="h-fit border p-6" onClick={handleSignIn}>
+        Log in
+      </button>
     )
   }
 
   return (
     <Fragment>
-      <div>
+      <div className="flex">
         <button onClick={handleSignOut}>Log out</button>
         <button onClick={handleSwitchWallet}>Switch Wallet</button>
         <button onClick={handleVerifyOwner}>Verify Owner</button>
