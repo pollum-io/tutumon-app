@@ -23,8 +23,10 @@ export default async function handle(
     console.log('req.body', req.body)
 
     if (req.method === 'POST') {
-      const response = await getOpenAiResponse(req.body)
-      // const response = await getTrainedAiResponse(req.body)
+      console.log('cheguei aqui')
+
+      // const response = await getOpenAiResponse(req.body)
+      const response = await getTrainedAiResponse(req.body)
 
       return res.status(200).json(response)
     }
