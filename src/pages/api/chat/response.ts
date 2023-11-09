@@ -19,11 +19,17 @@ export async function getOpenAiResponse({ input }: { input: string }) {
   }
 }
 
-export async function getTrainedAiResponse({ input }: { input: string }) {
+export async function getTrainedAiResponse({
+  input,
+  personality,
+}: {
+  input: string
+  personality: string
+}) {
   try {
     const aiResponse = await axios.post(
-      `http://127.0.0.1:8000/chat`,
-      { input: input },
+      `http://ec2-34-204-81-241.compute-1.amazonaws.com:4000/chat`,
+      { input: input, pesonality: personality },
       {
         timeout: 40000,
       },
@@ -42,7 +48,7 @@ export async function getTrainedAiResponse({ input }: { input: string }) {
 export async function createPersonality({ input }: { input: any }) {
   try {
     const res = await axios.post(
-      `https://3cde-178-166-73-115.ngrok.io/create_personality`,
+      `http://ec2-34-204-81-241.compute-1.amazonaws.com:4000/create_personality`,
       { input: input },
       {
         timeout: 40000,
