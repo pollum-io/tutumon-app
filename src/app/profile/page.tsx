@@ -15,7 +15,7 @@ import {
 
 import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useWallet } from '@solana/wallet-adapter-react'
+
 import { getSession, useSession } from 'next-auth/react'
 import axios from 'axios'
 import { Button } from '@/components/ui/button'
@@ -26,16 +26,16 @@ import { NftGrid } from '@/components/NftGrid'
 import { Layout } from '@/layouts'
 
 export default function Home() {
-  const { publicKey } = useWallet()
-  const holdings = useHoldings(publicKey?.toBase58())
+  // const { publicKey } = useWallet()
   const { data: session, update } = useSession()
+  const holdings = useHoldings('kaue.near')
 
   const [isUpdateLoading, setIsUpdateLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [currentView, setCurrentView] = useState<
     (Nft | Sft | SftWithToken | NftWithToken)[]
   >([])
-  const [selectedNft, setSelectedNft] = useState<Metadata | Nft | Sft>()
+  const [selectedNft, setSelectedNft] = useState<any>()
   const [custom, setCustom] = useState({ mirror: false })
   const perPage = 16
 
@@ -46,14 +46,14 @@ export default function Home() {
   const totalPages = Math.ceil((holdings.data?.length || 0) / perPage)
 
   const selectNft = useCallback(
-    (nft: FindNftsByOwnerOutput[number]) => {
-      if (selectedNft?.address === nft.address) {
+    (nft: any[number]) => {
+      if (selectedNft?.image_link === nft.image_link) {
         setSelectedNft(undefined)
         return
       }
       return setSelectedNft(nft)
     },
-    [selectedNft?.address],
+    [selectedNft?.image_link],
   )
 
   // const changeCurrentPage = (operation: string) => {
@@ -65,21 +65,27 @@ export default function Home() {
   // }
 
   const updateUser = async () => {
+    console.log('aaaaaaa')
+
     if (!session) return
     setIsUpdateLoading(true)
 
     const updatedData = {
-      image: selectedNft?.json?.image,
+      image: selectedNft.image_link || '/tutumon.png',
       imgConfig: custom,
       mintId: selectedNft?.address,
     }
 
     try {
-      await axios.put(
-        `/api/user?publickey=${publicKey?.toBase58()}`,
-        updatedData,
-      )
+      await axios.put(`/api/user?publickey=${session.user?.email}`, updatedData)
+
+      const res = await axios.post(`/api/chat/createPersonality`, selectedNft)
+
+      const personality = await res.data
+
+      alert(personality.personality)
     } catch (error) {
+      alert('Error updating user')
       console.error(error)
     } finally {
       await update()
@@ -118,7 +124,7 @@ export default function Home() {
         <p>Selected Image</p>
         <img
           className={'h-full w-full object-cover'}
-          src={selectedNft?.json?.image || '/solpal.png'}
+          src={selectedNft?.json?.image || '/tutumon.png'}
           alt="Pal image"
         />
       </div> */}
@@ -136,7 +142,7 @@ export default function Home() {
         >
           <img
             className={'h-full w-full object-cover'}
-            src={selectedNft?.json?.image || '/solpal.png'}
+            src={selectedNft?.json?.image || '/tutumon.png'}
             alt="Pal image"
           />
         </div>

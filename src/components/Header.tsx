@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
-import WalletConnect from './WalletConnect'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
 function ThemeIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -23,6 +23,7 @@ export function Header() {
   let { resolvedTheme, setTheme } = useTheme()
   const pathname = usePathname()
   let otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark'
+  const { data: session } = useSession()
 
   useEffect(() => {
     setMounted(true)
@@ -36,13 +37,14 @@ export function Header() {
     <div className="right-4 top-4 z-50 -m-2.5 hidden px-8 pt-4 text-black lg:absolute lg:flex">
       {pathname === '/' ? (
         <Link
-          href={'/profile'}
+          href={session ? '/profile' : '/signin'}
           className="wallet-adapter-button-trigger flex items-center justify-center rounded-lg bg-transparent font-bold text-black"
         >
           Launch App
         </Link>
       ) : (
-        <WalletConnect />
+        <>NOTHING HERE</>
+        // <WalletConnect />
       )}
       {/* <button
         type="button"
