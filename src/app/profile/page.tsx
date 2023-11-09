@@ -71,6 +71,7 @@ export default function Home() {
     setIsUpdateLoading(true)
 
     const updatedData = {
+      email: session.user?.email,
       image: selectedNft?.url || selectedNft?.media,
       imgConfig: custom,
       mintId: selectedNft?.address,
