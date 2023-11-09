@@ -7,8 +7,8 @@ import { usePathname } from 'next/navigation'
 export function Aside() {
   return (
     <aside className="grid basis-1/4 grid-flow-row auto-rows-[2rem]">
-      <h1 className={`text-5xl font-bold text-[#0FF089] ${raleway.className}`}>
-        SolPal
+      <h1 className={`text-5xl font-bold text-[#FF7DA1] ${raleway.className}`}>
+        Tutumon
       </h1>
       <Navbar />
     </aside>
@@ -50,13 +50,12 @@ function NavbarItem({
   return (
     <li>
       <Link
-        className={`relative flex items-center gap-x-2 ${
-          active ? 'text-[#eee]' : 'text-[#6f6f6f]'
-        } ${disabled ? 'cursor-not-allowed' : ''}`}
+        className={`relative flex items-center gap-x-2 ${active ? 'text-[#eee]' : 'text-[#6f6f6f]'
+          } ${disabled ? 'cursor-not-allowed' : ''}`}
         href={disabled ? '' : route}
       >
         {active && (
-          <span className="absolute left-0 aspect-square w-1.5 -translate-x-3 translate-y-0.5 rounded-full bg-[#0FF089]" />
+          <span className="absolute left-0 aspect-square w-1.5 -translate-x-3 translate-y-0.5 rounded-full bg-[#FF7DA1]" />
         )}
         {name}
       </Link>

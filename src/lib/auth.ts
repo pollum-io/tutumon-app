@@ -1,7 +1,5 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import nacl from 'tweetnacl'
-import bs58 from 'bs58'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import axios, { AxiosError } from 'axios'
 import { prisma } from './prisma'
@@ -15,60 +13,58 @@ export const authOptions: NextAuthOptions = {
 
   providers: [
     CredentialsProvider({
-      name: 'Wallet',
       credentials: {
         publicKey: { label: 'Public Key', type: 'text' },
-        signature: { label: 'Signature', type: 'text' },
-        nonce: { label: 'Nonce', type: 'text' },
+        accountId: { label: 'Account', type: 'text' },
+        signature: { label: 'Signature', type: 'boolean' },
       },
       async authorize(credentials) {
-        if (!credentials) throw new Error('user can not be authenticated')
-        const message = `Sign this message for authenticating with your wallet. Nonce: ${credentials.nonce}`
-        const messageBytes = new TextEncoder().encode(message)
-
-        const publicKeyBytes = bs58.decode(credentials.publicKey)
-
-        const signatureBytes = bs58.decode(credentials.signature)
-
-        const result = nacl.sign.detached.verify(
-          messageBytes,
-          signatureBytes,
-          publicKeyBytes,
-        )
-
-        if (!result) {
+        if (!credentials?.signature) {
           throw new Error('user can not be authenticated')
         }
 
         try {
+          console.log('aquiaaa')
+
           const response = await axios.get(
             process.env.NODE_ENV === 'production'
-              ? `https://www.solpal.org/api/user?publickey=${credentials.publicKey}`
-              : `http://localhost:3000/api/user?publickey=${credentials.publicKey}`,
+              ? `https://tutu-monster.vercel.app/api/user?publickey=${credentials?.publicKey}`
+              : `http://localhost:3000/api/user?publickey=${credentials?.publicKey}`,
           )
 
           if (response.status == 200 && response.data) {
             const dbUser = response.data
 
-            return { ...dbUser, name: credentials.publicKey }
+            return {
+              ...dbUser,
+              name: credentials?.accountId,
+              email: credentials.publicKey,
+            }
           }
 
           throw new Error('user can not be authenticated')
         } catch (e: unknown) {
+          console.log('aqui falhou')
+
           if (e instanceof AxiosError) {
             if (e.response?.status === 404) {
               const res = await axios.post(
                 process.env.NODE_ENV === 'production'
-                  ? `https://www.solpal.org/api/user`
+                  ? `https://tutu-monster.vercel.app/api/user`
                   : `http://localhost:3000/api/user`,
                 {
-                  publicKey: credentials.publicKey,
+                  publicKey: credentials?.publicKey,
+                  accountId: credentials?.accountId,
                 },
               )
 
               const newUser = await res.data
 
-              return { ...newUser, name: credentials.publicKey }
+              return {
+                ...newUser,
+                name: credentials?.accountId,
+                email: credentials.publicKey,
+              }
             }
           }
         }
@@ -81,7 +77,7 @@ export const authOptions: NextAuthOptions = {
       try {
         const response = await axios.get(
           process.env.NODE_ENV === 'production'
-            ? `https://www.solpal.org/api/user?publickey=${token.name}`
+            ? `https://tutu-monster.vercel.app/api/user?publickey=${token.name}`
             : `http://localhost:3000/api/user?publickey=${token.name}`,
         )
 
