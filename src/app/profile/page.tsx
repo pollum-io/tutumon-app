@@ -47,13 +47,13 @@ export default function Home() {
 
   const selectNft = useCallback(
     (nft: any[number]) => {
-      if (selectedNft?.url === nft.url || selectedNft?.media === nft.media) {
+      if (selectedNft?.image_link === nft.image_link) {
         setSelectedNft(undefined)
         return
       }
       return setSelectedNft(nft)
     },
-    [selectedNft?.media, selectedNft?.url],
+    [selectedNft?.image_link],
   )
 
   // const changeCurrentPage = (operation: string) => {

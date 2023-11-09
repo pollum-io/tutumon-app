@@ -38,17 +38,18 @@ export function NftGrid(props: NftGridProps) {
             return (
               <button
                 key={index}
-                className={`rounded-lg outline-1 hover:brightness-110 ${props.selectedNft?.reference === nft.reference
-                  ? 'outline outline-[#FF7DA1]'
-                  : ''
-                  }`}
+                className={`rounded-lg outline-1 hover:brightness-110 ${
+                  props.selectedNft?.image_link === nft.image_link
+                    ? 'outline outline-[#FF7DA1]'
+                    : ''
+                }`}
                 onClick={() => {
                   props.onClick !== undefined && props.onClick(nft)
                 }}
               >
                 <Nft
                   name={nft.title}
-                  src={nft.url || nft.media}
+                  src={nft.image_link}
                   symbol={nft.symbol}
                 />
               </button>
