@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
 
           const response = await axios.get(
             process.env.NODE_ENV === 'production'
-              ? `https://www.solpal.org/api/user?publickey=${credentials?.publicKey}`
+              ? `https://tutu-monster.vercel.app/api/user?publickey=${credentials?.publicKey}`
               : `http://localhost:3000/api/user?publickey=${credentials?.publicKey}`,
           )
 
@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
             if (e.response?.status === 404) {
               const res = await axios.post(
                 process.env.NODE_ENV === 'production'
-                  ? `https://www.solpal.org/api/user`
+                  ? `https://tutu-monster.vercel.app/api/user`
                   : `http://localhost:3000/api/user`,
                 {
                   publicKey: credentials?.publicKey,
@@ -77,7 +77,7 @@ export const authOptions: NextAuthOptions = {
       try {
         const response = await axios.get(
           process.env.NODE_ENV === 'production'
-            ? `https://www.solpal.org/api/user?publickey=${token.name}`
+            ? `https://tutu-monster.vercel.app/api/user?publickey=${token.name}`
             : `http://localhost:3000/api/user?publickey=${token.name}`,
         )
 

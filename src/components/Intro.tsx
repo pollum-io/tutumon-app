@@ -55,37 +55,28 @@ export function Intro() {
           />
         </Link>
       </div>
-      <h1 className="font-display mt-14 text-4xl/tight font-light text-white">
-        Infinite Near Wisdom{' '}
-        <span className="text-[#07fee5]">Anywhere you go.</span>
-      </h1>
-      <p className="mt-4 text-sm/6 text-gray-300">
-        Explore Near with Tutu.Monster, the AI Chrome extension that simplifies
-        Near knowledge in a click.
-      </p>
-      {/* <SignUpForm /> */}
-      <div className="mt-8 flex flex-wrap justify-center gap-x-1 gap-y-3 sm:gap-x-2 lg:justify-start">
-        {/* <IconLink href="#" icon={BookIcon} className="flex-none">
-          Documentation
-        </IconLink> */}
-        <IconLink
-          href="https://github.com/SolPal"
-          icon={GitHubIcon}
-          className="flex-none"
-          rel="noreferrer"
-          target="_blank"
-        >
-          GitHub
-        </IconLink>
-        <IconLink
-          href="https://twitter.com/SolanaPal"
-          icon={TwitterIcon}
-          className="flex-none"
-          rel="noreferrer"
-          target="_blank"
-        >
-          Twitter
-        </IconLink>
+      {/* Text container with blur background */}
+      <div className="backdrop-blur-md bg-black/60 rounded-xl p-4">
+        <h1 className="font-display text-4xl tight font-light text-white">
+          Infinite Near Wisdom <span className="text-[#FF7DA1]">Anywhere you go.</span>
+        </h1>
+        <p className="mt-4 text-sm/6 text-gray-300">
+          Explore Near with Tutu.Monster, the AI Chrome extension that simplifies
+          Near knowledge in a click.
+        </p>
+
+        {/* Rest of the content */}
+        <div className="mt-8 flex flex-wrap justify-center gap-x-1 gap-y-3 sm:gap-x-2 lg:justify-start">
+          <IconLink
+            href="https://github.com/pollum-io/tutumon-app"
+            icon={GitHubIcon}
+            className="flex-none"
+            rel="noreferrer"
+            target="_blank"
+          >
+            GitHub
+          </IconLink>
+        </div>
       </div>
     </>
   )
@@ -96,7 +87,7 @@ export function IntroFooter() {
     <p className="flex items-baseline gap-x-2 text-[0.8125rem]/6 text-gray-500">
       Brought to you by{' '}
       <IconLink href="#" icon={TwitterIcon} compact large>
-        @NearPal
+        @Pollum-io
       </IconLink>
     </p>
   )

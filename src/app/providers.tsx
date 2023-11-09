@@ -5,7 +5,7 @@ import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 import React, { FC, useMemo, useEffect } from 'react'
 
-import { clusterApiUrl } from '@solana/web3.js'
+// import { clusterApiUrl } from '@solana/web3.js'
 
 // Default styles that can be overridden by your app
 // import '@solana/wallet-adapter-react-ui/styles.css'
