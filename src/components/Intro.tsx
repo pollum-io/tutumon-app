@@ -47,7 +47,7 @@ export function Intro() {
       <div>
         <Link href="/">
           <Image
-            src="/solpal-extended.png"
+            src="/tutumon-removebg.png"
             width={200}
             height={200}
             alt="logo"

@@ -10,7 +10,7 @@ export function useHoldings(publicKey: string | undefined) {
       const endpoint = 'https://graph.mintbase.xyz/mainnet'
       const apiKey = 'anon'
       // const name = 'thomgabriel.near';
-      // const name = 'kaue.near';
+      const name = 'kaue.near'
       // const name = 'astark.near';
 
       const query = `query MyQuery {

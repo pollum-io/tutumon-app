@@ -117,7 +117,7 @@ export default function Home() {
         <p>Selected Image</p>
         <img
           className={'h-full w-full object-cover'}
-          src={selectedNft?.json?.image || '/solpal.png'}
+          src={selectedNft?.json?.image || '/nearpal.png'}
           alt="Pal image"
         />
       </div> */}
@@ -135,7 +135,7 @@ export default function Home() {
         >
           <img
             className={'h-full w-full object-cover'}
-            src={selectedNft?.json?.image || '/solpal.png'}
+            src={selectedNft?.json?.image || '/nearpal.png'}
             alt="Pal image"
           />
         </div>
