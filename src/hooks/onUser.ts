@@ -12,7 +12,7 @@ export function useHoldings(publicKey: string | undefined) {
       // const name = 'thomgabriel.near';
       const name = 'kaue.near'
       // const name = 'astark.near';
-
+  
       const query = `query MyQuery {
           mb_views_nft_tokens(
             limit: 30
@@ -26,7 +26,7 @@ export function useHoldings(publicKey: string | undefined) {
             reference
           }
         }`
-
+  
       const response = await axios.post(
         endpoint,
         { query },
@@ -37,11 +37,11 @@ export function useHoldings(publicKey: string | undefined) {
           },
         },
       )
-
+  
       const data = response.data.data.mb_views_nft_tokens
-
-      let invalid_nfts: any[] = []
-
+  
+      let valid_nfts: any[] = [];
+  
       data.forEach(
         (
           token: {
@@ -52,28 +52,25 @@ export function useHoldings(publicKey: string | undefined) {
           idx: string | number,
         ) => {
           if (token.media.length !== 0 && !token.media.includes('https://')) {
-            data[idx].url = token.base_uri + '/' + token.media
+            data[idx].media = token.base_uri + '/' + token.media
           }
-
+  
           if (
-            !token.media.includes('https://') &&
-            !token.url.includes('https://')
+            token.media.includes('https://')
           ) {
-            invalid_nfts.push(idx)
+            valid_nfts.push({
+              title: data[idx].title,
+              description: data[idx].description,
+              image_link: data[idx].media
+            });
           }
-          // console.log(data[idx]?.url, data[idx]?.media)
         },
       )
-
-      // we can update this to pass a bool value if has valid img or not
-      for (let index = 0; index < invalid_nfts.length; index++) {
-        // console.log(data[index].url, data[index].media)
-        data.splice(invalid_nfts[index], 1)
-      }
-      // console.log('data', data);
-
-      return data
-    } catch (error) {
+  
+      // console.log('data', valid_nfts);
+  
+      return valid_nfts
+      } catch (error) {
       console.error('Error:', error)
     }
   }
