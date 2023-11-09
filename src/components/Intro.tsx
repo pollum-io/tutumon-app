@@ -47,7 +47,7 @@ export function Intro() {
       <div>
         <Link href="/">
           <Image
-            src="/solpal-extended.png"
+            src="/tutumon-removebg.png"
             width={200}
             height={200}
             alt="logo"
@@ -56,12 +56,12 @@ export function Intro() {
         </Link>
       </div>
       <h1 className="font-display mt-14 text-4xl/tight font-light text-white">
-        Infinite Solana Wisdom{' '}
+        Infinite Near Wisdom{' '}
         <span className="text-[#07fee5]">Anywhere you go.</span>
       </h1>
       <p className="mt-4 text-sm/6 text-gray-300">
-        Explore Solana with SolPal, the AI Chrome extension that simplifies
-        Solana knowledge in a click.
+        Explore Near with Tutu.Monster, the AI Chrome extension that simplifies
+        Near knowledge in a click.
       </p>
       {/* <SignUpForm /> */}
       <div className="mt-8 flex flex-wrap justify-center gap-x-1 gap-y-3 sm:gap-x-2 lg:justify-start">

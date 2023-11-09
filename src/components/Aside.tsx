@@ -8,7 +8,7 @@ export function Aside() {
   return (
     <aside className="grid basis-1/4 grid-flow-row auto-rows-[2rem]">
       <h1 className={`text-5xl font-bold text-[#0FF089] ${raleway.className}`}>
-        SolPal
+        Tutumon
       </h1>
       <Navbar />
     </aside>

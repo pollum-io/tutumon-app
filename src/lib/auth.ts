@@ -19,8 +19,6 @@ export const authOptions: NextAuthOptions = {
         signature: { label: 'Signature', type: 'boolean' },
       },
       async authorize(credentials) {
-        console.log('credentials', credentials)
-
         if (!credentials?.signature) {
           throw new Error('user can not be authenticated')
         }
@@ -33,8 +31,6 @@ export const authOptions: NextAuthOptions = {
               ? `https://www.solpal.org/api/user?publickey=${credentials?.publicKey}`
               : `http://localhost:3000/api/user?publickey=${credentials?.publicKey}`,
           )
-
-          console.log('response', response)
 
           if (response.status == 200 && response.data) {
             const dbUser = response.data

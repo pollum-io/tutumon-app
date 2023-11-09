@@ -1,16 +1,19 @@
 import { FindNftsByOwnerOutput } from '@metaplex-foundation/js'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { BiArrowBack } from 'react-icons/bi'
 
 interface NftGridProps {
-  nfts: FindNftsByOwnerOutput
-  selectedNft?: FindNftsByOwnerOutput[number]
+  nfts: any[]
+  selectedNft?: any[number]
   onClick?(args: unknown): unknown
 }
 
 export function NftGrid(props: NftGridProps) {
   const [viewIndex, setViewIndex] = useState(0)
+
+  const { data: session } = useSession()
 
   const views = useMemo(() => {
     const itemsPerView = 9
@@ -30,13 +33,13 @@ export function NftGrid(props: NftGridProps) {
       </div>
       <div className="mt-4 grid w-full auto-rows-fr grid-cols-3 items-start gap-4">
         {views.length !== 0 &&
-          views[viewIndex].map((nft) => {
+          views[viewIndex].map((nft: any, index) => {
             if (!nft) return
             return (
               <button
-                key={nft.address.toBase58()}
+                key={index}
                 className={`rounded-lg outline-1 hover:brightness-110 ${
-                  props.selectedNft?.address === nft.address
+                  props.selectedNft?.reference === nft.reference
                     ? 'outline outline-[#0FF089]'
                     : ''
                 }`}
@@ -45,8 +48,8 @@ export function NftGrid(props: NftGridProps) {
                 }}
               >
                 <Nft
-                  name={nft.name}
-                  src={nft.json?.image}
+                  name={nft.title}
+                  src={nft.url || nft.media}
                   symbol={nft.symbol}
                 />
               </button>
@@ -68,7 +71,7 @@ export function Nft({ name, symbol, src }: NftProps) {
       <div className="relative aspect-square w-full overflow-hidden">
         <img
           className={'h-full w-full object-cover'}
-          src={src || '/solpal.png'}
+          src={src || '/nearpal.png'}
           alt=""
         />
       </div>

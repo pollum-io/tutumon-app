@@ -8,20 +8,16 @@ import type {
 import type {
   SignedMessage,
   SignMessageParams,
-  Transaction,
 } from '@near-wallet-selector/core'
 import { verifyFullKeyBelongsToUser } from '@near-wallet-selector/core'
 import { verifySignature } from '@near-wallet-selector/core'
 import BN from 'bn.js'
-
 import type { Account, Message } from '@/interfaces'
 import { useWalletSelector } from '@/context/WalletSelectorContext'
 import { CONTRACT_ID } from '@/constants'
-import SignIn from '@/components/SignIn'
-import Form from '@/components/Form'
-import Messages from '@/components/Messages'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 type Submitted = SubmitEvent & {
   target: { elements: { [key: string]: HTMLInputElement } }
@@ -58,7 +54,6 @@ const Content: React.FC = () => {
   const [messages, setMessages] = useState<Array<Message>>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { data: session } = useSession()
-  const router = useRouter()
 
   const getAccount = useCallback(async (): Promise<Account | null> => {
     if (!accountId) {
@@ -291,7 +286,12 @@ const Content: React.FC = () => {
     )
   }
 
-  if (session?.user) return router.push('/profile')
+  if (session?.user)
+    return (
+      <>
+        <Link href={'/profile'}>Launch App</Link>
+      </>
+    )
   return (
     <Fragment>
       <div className="flex flex-col bg-green-300">
