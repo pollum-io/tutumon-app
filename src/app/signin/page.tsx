@@ -289,19 +289,44 @@ const Content: React.FC = () => {
   if (session?.user)
     return (
       <>
-        <Link href={'/profile'}>Launch App</Link>
+        <Link
+          href={'/profile'}
+          className="h-fit rounded-lg border border-[#FF7DA1] bg-[#FF7DA1] p-3 text-black hover:brightness-110"
+        >
+          Launch App
+        </Link>
       </>
     )
   return (
     <Fragment>
-      <div className="flex flex-col bg-green-300">
-        <button onClick={handleSignOut}>Log out</button>
-        <button onClick={handleSwitchWallet}>Switch Wallet</button>
+      <div className="flex h-fit flex-col gap-4  px-3 py-6 text-black ">
         {/* <button onClick={handleVerifyOwner}>Verify Owner</button> */}
-        <button onClick={handleSignMessage}>Sign Message</button>
+        <button
+          onClick={handleSignMessage}
+          className="rounded-lg border border-[#FF7DA1] bg-[#FF7DA1] p-3 hover:brightness-110"
+        >
+          Sign Message
+        </button>
+        <button
+          onClick={handleSwitchWallet}
+          className="rounded-lg border border-[#FF7DA1] bg-[#FF7DA1] p-3 hover:brightness-110"
+        >
+          Switch Wallet
+        </button>
         {accounts.length > 1 && (
-          <button onClick={handleSwitchAccount}>Switch Account</button>
+          <button
+            onClick={handleSwitchAccount}
+            className="rounded-lg border border-[#FF7DA1] bg-[#FF7DA1] p-3 hover:brightness-110"
+          >
+            Switch Account
+          </button>
         )}
+        <button
+          onClick={handleSignOut}
+          className="rounded-lg border border-[#FF7DA1] bg-[#FF7DA1] p-3 hover:brightness-110"
+        >
+          Log out
+        </button>
       </div>
       {/* <Form
         account={account}
