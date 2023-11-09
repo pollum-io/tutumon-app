@@ -3,7 +3,7 @@
 import { useId } from 'react'
 import { Header } from '@/components/Header'
 import { Intro } from '@/components/Intro'
-import { StarField } from '@/components/StarField'
+// import { StarField } from '@/components/StarField'
 
 function Timeline() {
   let id = useId()
@@ -77,12 +77,19 @@ function FixedSidebar({
 }) {
   return (
     <div className="relative flex-none overflow-hidden px-6 lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex lg:px-0">
-      <Glow />
       <div className="relative flex w-full lg:pointer-events-auto lg:mr-[calc(max(2rem,50%-38rem)+40rem)] lg:min-w-[32rem] lg:overflow-y-auto lg:overflow-x-hidden lg:pl-[max(4rem,calc(50%-38rem))]">
         <div className="mx-auto max-w-lg lg:mx-0 lg:flex lg:w-96 lg:max-w-none lg:flex-col lg:before:flex-1 lg:before:pt-6">
           <div className="pb-16 pt-20 sm:pb-20 sm:pt-32 lg:py-20">
+            <div
+              style={{
+                backgroundImage: `url('/background.jpg')`, // Path to your image
+                backgroundSize: 'cover', // Cover the entire area
+                backgroundPosition: 'center', // Center the background image
+                backgroundRepeat: 'no-repeat', // Do not repeat the image
+              }}
+              className="absolute inset-0"
+            />
             <div className="relative">
-              <StarField className="-right-44 top-14" />
               {main}
             </div>
           </div>
@@ -92,7 +99,7 @@ function FixedSidebar({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export function LandingPage({ children }: { children: React.ReactNode }) {

@@ -69,7 +69,7 @@ export default function Home() {
     setIsUpdateLoading(true)
 
     const updatedData = {
-      image: selectedNft?.uri || selectedNft?.media || '/nearpal.png',
+      image: selectedNft?.uri || selectedNft?.media || '/tutumon.png',
       imgConfig: custom,
       mintId: selectedNft?.address,
     }
@@ -115,7 +115,7 @@ export default function Home() {
         <p>Selected Image</p>
         <img
           className={'h-full w-full object-cover'}
-          src={selectedNft?.json?.image || '/nearpal.png'}
+          src={selectedNft?.json?.image || '/tutumon.png'}
           alt="Pal image"
         />
       </div> */}
@@ -133,7 +133,7 @@ export default function Home() {
         >
           <img
             className={'h-full w-full object-cover'}
-            src={selectedNft?.json?.image || '/nearpal.png'}
+            src={selectedNft?.json?.image || '/tutumon.png'}
             alt="Pal image"
           />
         </div>

@@ -38,11 +38,10 @@ export function NftGrid(props: NftGridProps) {
             return (
               <button
                 key={index}
-                className={`rounded-lg outline-1 hover:brightness-110 ${
-                  props.selectedNft?.reference === nft.reference
-                    ? 'outline outline-[#0FF089]'
-                    : ''
-                }`}
+                className={`rounded-lg outline-1 hover:brightness-110 ${props.selectedNft?.reference === nft.reference
+                  ? 'outline outline-[#FF7DA1]'
+                  : ''
+                  }`}
                 onClick={() => {
                   props.onClick !== undefined && props.onClick(nft)
                 }}
@@ -71,7 +70,7 @@ export function Nft({ name, symbol, src }: NftProps) {
       <div className="relative aspect-square w-full overflow-hidden">
         <img
           className={'h-full w-full object-cover'}
-          src={src || '/nearpal.png'}
+          src={src || '/c'}
           alt=""
         />
       </div>
