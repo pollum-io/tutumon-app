@@ -21,6 +21,7 @@ import SignIn from '@/components/SignIn'
 import Form from '@/components/Form'
 import Messages from '@/components/Messages'
 import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 type Submitted = SubmitEvent & {
   target: { elements: { [key: string]: HTMLInputElement } }
@@ -57,6 +58,7 @@ const Content: React.FC = () => {
   const [messages, setMessages] = useState<Array<Message>>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { data: session } = useSession()
+  const router = useRouter()
 
   const getAccount = useCallback(async (): Promise<Account | null> => {
     if (!accountId) {
@@ -289,7 +291,7 @@ const Content: React.FC = () => {
     )
   }
 
-  if (session?.user) return <div>Logged in as {session.user.name}</div>
+  if (session?.user) return router.push('/profile')
   return (
     <Fragment>
       <div className="flex flex-col bg-green-300">

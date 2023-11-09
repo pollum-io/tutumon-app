@@ -15,7 +15,7 @@ import {
 
 import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useWallet } from '@solana/wallet-adapter-react'
+
 import { getSession, useSession } from 'next-auth/react'
 import axios from 'axios'
 import { Button } from '@/components/ui/button'
@@ -26,9 +26,9 @@ import { NftGrid } from '@/components/NftGrid'
 import { Layout } from '@/layouts'
 
 export default function Home() {
-  const { publicKey } = useWallet()
-  const holdings = useHoldings(publicKey?.toBase58())
+  // const { publicKey } = useWallet()
   const { data: session, update } = useSession()
+  const holdings = useHoldings(session?.user?.name || '')
 
   const [isUpdateLoading, setIsUpdateLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -75,10 +75,7 @@ export default function Home() {
     }
 
     try {
-      await axios.put(
-        `/api/user?publickey=${publicKey?.toBase58()}`,
-        updatedData,
-      )
+      await axios.put(`/api/user?publickey=${session.user?.name}`, updatedData)
     } catch (error) {
       console.error(error)
     } finally {
