@@ -28,7 +28,7 @@ import { Layout } from '@/layouts'
 export default function Home() {
   // const { publicKey } = useWallet()
   const { data: session, update } = useSession()
-  const holdings = useHoldings(session?.user?.name || '')
+  const holdings = useHoldings('kaue.near')
 
   const [isUpdateLoading, setIsUpdateLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -38,6 +38,8 @@ export default function Home() {
   const [selectedNft, setSelectedNft] = useState<Metadata | Nft | Sft>()
   const [custom, setCustom] = useState({ mirror: false })
   const perPage = 16
+
+  console.log('holdings', holdings)
 
   const startIndex = (currentPage - 1) * perPage
   const endIndex = startIndex + perPage
