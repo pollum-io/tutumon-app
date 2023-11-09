@@ -10,31 +10,65 @@ const mx = Metaplex.make(connection)
 
 export function useHoldings(publicKey: string | undefined) {
   const fetchNFTs = async (publicKey = '') => {
-    try {
-      const list = await mx
-        .nfts()
-        .findAllByOwner({ owner: new PublicKey(publicKey || '') })
-      const promises = list.map((metadata) => {
-        if ('mintAddress' in metadata) {
-          return mx.nfts().load({ metadata })
-        } else {
-          return Promise.resolve(metadata)
+      try {
+        const endpoint = 'https://graph.mintbase.xyz/mainnet';
+        const apiKey = 'anon';
+        // const name = 'thomgabriel.near';
+        // const name = 'kaue.near';
+        // const name = 'astark.near';
+    
+        const query = `query MyQuery {
+          mb_views_nft_tokens(
+            limit: 30
+            where: {owner: {_eq: "${name}"}, _and: {burned_timestamp: {_is_null: true}, last_transfer_timestamp: {_is_null: false}}}
+          ) {
+            nft_contract_id
+            title
+            description
+            media
+            base_uri
+            reference
+          }
+        }`;
+    
+        const response = await axios.post(
+          endpoint,
+          { query },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'mb-api-key': apiKey,
+            },
+          }
+        );
+    
+        const data = response.data.data.mb_views_nft_tokens;
+    
+        let invalid_nfts = [];
+    
+        data.forEach((token, idx) => {
+          if (token.media.length !== 0 && !token.media.includes('https://')) {
+            data[idx].media = token.base_uri + "/" + token.media;
+          } 
+    
+          if (!token.media.includes('https://') && !token.url.includes('https://')) {
+            invalid_nfts.push(idx);
+          }
+          // console.log(data[idx]?.media)
+        });
+    
+        // we can update this to pass a bool value if has valid img or not
+        for (let index = 0; index < invalid_nfts.length; index++) {
+          // console.log(data[index].media)
+          data.splice(invalid_nfts[index], 1);
         }
-      })
+        // console.log('data', data);
 
-      // Using Promise.allSettled instead of Promise.all
-      return Promise.allSettled(promises).then((results) => {
-        return results
-          .map((result) => {
-            if (result.status === 'fulfilled') {
-              return result.value
-            }
-          })
-          .filter(isNotNullable)
-      })
-    } catch (e) {
-      console.error(e)
-    }
+        return data;
+    
+      } catch (error) {
+        console.error('Error:', error);
+      }
   }
 
   return useQuery(['holdings'], async () => await fetchNFTs(publicKey), {
