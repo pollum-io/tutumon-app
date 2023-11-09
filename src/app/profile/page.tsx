@@ -71,13 +71,19 @@ export default function Home() {
     setIsUpdateLoading(true)
 
     const updatedData = {
-      image: selectedNft?.url || selectedNft?.media || '/tutumon.png',
+      image: selectedNft.image_link || '/tutumon.png',
       imgConfig: custom,
       mintId: selectedNft?.address,
     }
 
     try {
       await axios.put(`/api/user?publickey=${session.user?.email}`, updatedData)
+
+      const res = await axios.post(`/api/chat/createPersonality`, selectedNft)
+
+      const personality = await res.data
+
+      alert(personality.personality)
     } catch (error) {
       alert('Error updating user')
       console.error(error)

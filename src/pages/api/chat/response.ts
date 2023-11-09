@@ -38,3 +38,21 @@ export async function getTrainedAiResponse({ input }: { input: string }) {
     throw new ApiError(500, 'Internal Server Error')
   }
 }
+
+export async function createPersonality({ input }: { input: any }) {
+  try {
+    const res = await axios.post(
+      `https://3cde-178-166-73-115.ngrok.io/create_personality`,
+      { input: input },
+      {
+        timeout: 40000,
+      },
+    )
+
+    const persona = await res.data
+
+    return persona
+  } catch (error) {
+    throw new ApiError(500, 'Internal Server Error')
+  }
+}
