@@ -65,18 +65,21 @@ export default function Home() {
   // }
 
   const updateUser = async () => {
+    console.log('aaaaaaa')
+
     if (!session) return
     setIsUpdateLoading(true)
 
     const updatedData = {
-      image: selectedNft?.uri || selectedNft?.media || '/nearpal.png',
+      image: selectedNft?.url || selectedNft?.media,
       imgConfig: custom,
       mintId: selectedNft?.address,
     }
 
     try {
-      await axios.put(`/api/user?publickey=${session.user?.name}`, updatedData)
+      await axios.put(`/api/user?publickey=${session.user?.email}`, updatedData)
     } catch (error) {
+      alert('Error updating user')
       console.error(error)
     } finally {
       await update()

@@ -35,7 +35,11 @@ export const authOptions: NextAuthOptions = {
           if (response.status == 200 && response.data) {
             const dbUser = response.data
 
-            return { ...dbUser, name: credentials?.accountId }
+            return {
+              ...dbUser,
+              name: credentials?.accountId,
+              email: credentials.publicKey,
+            }
           }
 
           throw new Error('user can not be authenticated')
@@ -56,7 +60,11 @@ export const authOptions: NextAuthOptions = {
 
               const newUser = await res.data
 
-              return { ...newUser, name: credentials?.accountId }
+              return {
+                ...newUser,
+                name: credentials?.accountId,
+                email: credentials.publicKey,
+              }
             }
           }
         }
