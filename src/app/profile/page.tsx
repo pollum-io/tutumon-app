@@ -79,13 +79,14 @@ export default function Home() {
     try {
       await axios.put(`/api/user?publickey=${session.user?.email}`, updatedData)
 
-      const res = await axios.post(`/api/chat/createPersonality`, selectedNft)
+      // const res = await axios.post(`/api/chat/createPersonality`, selectedNft)
 
-      const personality = await res.data
+      // const personality = await res.data
 
-      alert(personality.personality)
+      // alert(personality.personality)
     } catch (error) {
-      alert('Error updating user')
+      // alert('Error updating user')
+      alert(error)
       console.error(error)
     } finally {
       await update()

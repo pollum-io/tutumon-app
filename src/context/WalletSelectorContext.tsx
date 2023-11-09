@@ -71,7 +71,7 @@ export const WalletSelectorContextProvider: React.FC<{
         // setupSender(),
         // setupMathWallet(),
         // setupNightly(),
-        // setupMeteorWallet(),
+        setupMeteorWallet(),
         // setupNearSnap(),
         // setupNarwallets(),
         // setupWelldoneWallet(),
@@ -99,7 +99,7 @@ export const WalletSelectorContextProvider: React.FC<{
     })
     const description = 'Please select a wallet to sign in.'
     const _modal = setupModal(_selector, {
-      contractId: CONTRACT_ID,
+      contractId: 'undefined',
       description,
     })
     const state = _selector.store.getState()
