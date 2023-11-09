@@ -10,9 +10,9 @@ import { Aside } from '@/components/Aside'
 import { openSans } from '@/fonts'
 
 export const metadata: Metadata = {
-  title: 'SolPal',
+  title: 'NearPal',
   description:
-    'Explore Solana with SolPal, the AI Chrome extension that simplifies Solana knowledge in a click.',
+    'Explore Near with NearPal, the AI Chrome extension that simplifies Near knowledge in a click.',
   alternates: {
     types: {
       'application/rss+xml': `${process.env.NEXT_PUBLIC_SITE_URL}/feed.xml`,

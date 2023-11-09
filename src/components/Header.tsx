@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
-import WalletConnect from './WalletConnect'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -42,7 +41,8 @@ export function Header() {
           Launch App
         </Link>
       ) : (
-        <WalletConnect />
+        <>NOTHING HERE</>
+        // <WalletConnect />
       )}
       {/* <button
         type="button"

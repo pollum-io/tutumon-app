@@ -89,6 +89,7 @@ model Nft {
 }
 
 model Wallet {
+  accountId   String?
   publicKey   String    @id
   createdDate DateTime? @default(now())
   updatedDate DateTime? @updatedAt

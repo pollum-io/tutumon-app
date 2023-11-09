@@ -9,6 +9,6 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: postgres
     networks:
-      - solpaldev
+      - nearpaldev
 networks:
-  solpaldev:
+  nearpaldev:
