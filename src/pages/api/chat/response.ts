@@ -3,8 +3,6 @@ import { ApiError } from 'next/dist/server/api-utils'
 import OpenAI from 'openai'
 
 export async function getOpenAiResponse({ input }: { input: string }) {
-  console.log('input', input)
-
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
     dangerouslyAllowBrowser: true,
@@ -15,8 +13,6 @@ export async function getOpenAiResponse({ input }: { input: string }) {
       messages: [{ role: 'user', content: input }],
       model: 'gpt-3.5-turbo',
     })
-
-    console.log('chatCompletion', chatCompletion)
 
     return chatCompletion
   } catch (error) {
@@ -31,8 +27,8 @@ export async function getTrainedAiResponse({ input }: { input: string }) {
       `http://ec2-34-204-81-241.compute-1.amazonaws.com:4000/chat`,
       {
         input: input,
-        pesonality:
-          'You are a pixelated, neon-lime-helmeted, gorilla-esque adventurer, spouting a rainbow from your mouth, ready to dazzle and dominate the digital jungles of NEAR with your vivid existence.',
+        personality:
+          'You are like a living embodiment of whimsy, a plastic avatar with a hollow gaze, radiating simplicity from your blocky form amidst a backdrop as vibrant as your bold, red torso.',
       },
       {
         timeout: 40000,

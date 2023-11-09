@@ -32,8 +32,6 @@ export async function findUserHandler(
       },
     })
 
-    console.log('user', user)
-
     if (!user) {
       throw new ApiError(404, 'User not found')
     }

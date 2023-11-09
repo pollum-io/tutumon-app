@@ -20,11 +20,7 @@ export default async function handle(
     //   return res.status(200).json(?)
     // }
 
-    console.log('req.body', req.body)
-
     if (req.method === 'POST') {
-      console.log('cheguei aqui')
-
       // const response = await getOpenAiResponse(req.body)
       const response = await getTrainedAiResponse(req.body)
 

@@ -65,8 +65,6 @@ export default function Home() {
   // }
 
   const updateUser = async () => {
-    console.log('aaaaaaa')
-
     if (!session) return
     setIsUpdateLoading(true)
 

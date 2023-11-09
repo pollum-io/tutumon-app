@@ -9,8 +9,6 @@ export const updateUserHandler = async (
   const { publickey } = req.query
   const userData = req.body
 
-  console.log('userData', userData)
-
   const user = await findUserHandler(req, res)
 
   if (!publickey) {
