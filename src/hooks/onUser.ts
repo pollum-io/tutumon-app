@@ -69,7 +69,7 @@ export function useHoldings(publicKey: string | undefined) {
   
       // console.log('data', valid_nfts);
   
-      return data
+      return valid_nfts
       } catch (error) {
       console.error('Error:', error)
     }
