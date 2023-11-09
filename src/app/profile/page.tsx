@@ -35,11 +35,9 @@ export default function Home() {
   const [currentView, setCurrentView] = useState<
     (Nft | Sft | SftWithToken | NftWithToken)[]
   >([])
-  const [selectedNft, setSelectedNft] = useState<Metadata | Nft | Sft>()
+  const [selectedNft, setSelectedNft] = useState<any>()
   const [custom, setCustom] = useState({ mirror: false })
   const perPage = 16
-
-  console.log('holdings', holdings)
 
   const startIndex = (currentPage - 1) * perPage
   const endIndex = startIndex + perPage
@@ -48,14 +46,14 @@ export default function Home() {
   const totalPages = Math.ceil((holdings.data?.length || 0) / perPage)
 
   const selectNft = useCallback(
-    (nft: FindNftsByOwnerOutput[number]) => {
-      if (selectedNft?.address === nft.address) {
+    (nft: any[number]) => {
+      if (selectedNft?.url === nft.url || selectedNft?.media === nft.media) {
         setSelectedNft(undefined)
         return
       }
       return setSelectedNft(nft)
     },
-    [selectedNft?.address],
+    [selectedNft?.media, selectedNft?.url],
   )
 
   // const changeCurrentPage = (operation: string) => {
@@ -71,7 +69,7 @@ export default function Home() {
     setIsUpdateLoading(true)
 
     const updatedData = {
-      image: selectedNft?.json?.image,
+      image: selectedNft?.uri || selectedNft?.media || '/nearpal.png',
       imgConfig: custom,
       mintId: selectedNft?.address,
     }

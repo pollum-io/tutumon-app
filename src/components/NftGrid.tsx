@@ -1,4 +1,5 @@
 import { FindNftsByOwnerOutput } from '@metaplex-foundation/js'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { BiArrowBack } from 'react-icons/bi'
@@ -11,6 +12,8 @@ interface NftGridProps {
 
 export function NftGrid(props: NftGridProps) {
   const [viewIndex, setViewIndex] = useState(0)
+
+  const { data: session } = useSession()
 
   const views = useMemo(() => {
     const itemsPerView = 9

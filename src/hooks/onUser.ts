@@ -52,7 +52,7 @@ export function useHoldings(publicKey: string | undefined) {
           idx: string | number,
         ) => {
           if (token.media.length !== 0 && !token.media.includes('https://')) {
-            data[idx].media = token.base_uri + '/' + token.media
+            data[idx].url = token.base_uri + '/' + token.media
           }
 
           if (
@@ -61,13 +61,13 @@ export function useHoldings(publicKey: string | undefined) {
           ) {
             invalid_nfts.push(idx)
           }
-          // console.log(data[idx]?.media)
+          // console.log(data[idx]?.url, data[idx]?.media)
         },
       )
 
       // we can update this to pass a bool value if has valid img or not
       for (let index = 0; index < invalid_nfts.length; index++) {
-        // console.log(data[index].media)
+        // console.log(data[index].url, data[index].media)
         data.splice(invalid_nfts[index], 1)
       }
       // console.log('data', data);
